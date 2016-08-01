@@ -12,12 +12,12 @@ import java.util.Random;
  */
 public abstract class Tank {
 
-    protected int x,y;
-    protected Image image,imageUp, imageDown, imageLeft, imageRight;
+    protected int x, y;
+    protected Image image, imageUp, imageDown, imageLeft, imageRight;
     protected int direction;
     protected int speed = 10;
 
-    public Tank(int x, int y){
+    public Tank(int x, int y) {
         this.x = x;
         this.y = y;
         imageRight = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "bossyellow_4.png")).getImage();
@@ -29,39 +29,43 @@ public abstract class Tank {
     }
 
     public void draw(Graphics2D g2d) {
-        g2d.drawImage(this.image,x,y, CommonVLs.SIZE_TANK,CommonVLs.SIZE_TANK,null);
+        g2d.drawImage(this.image, x, y, CommonVLs.SIZE_TANK, CommonVLs.SIZE_TANK, null);
     }
 
 
     public void move() {
         switch (direction) {
-            case CommonVLs.UP :
+            case CommonVLs.UP:
                 if (y <= 0) break;
-                --y; break;
+                --y;
+                break;
             case CommonVLs.DOWN:
                 if (y >= CommonVLs.HEIGHT_FRAME - 70) break;
-                ++y; break;
+                ++y;
+                break;
             case CommonVLs.LEFT:
                 if (x <= 0) break;
-                --x; break;
+                --x;
+                break;
             case CommonVLs.RIGHT:
                 if (x >= CommonVLs.WIDTH_SCREEN - 30) break;
-                ++x; break;
+                ++x;
+                break;
         }
     }
 
     protected void changeImage() {
         switch (direction) {
-            case CommonVLs.DOWN :
+            case CommonVLs.DOWN:
                 image = imageDown;
                 break;
-            case CommonVLs.LEFT :
+            case CommonVLs.LEFT:
                 image = imageLeft;
                 break;
-            case CommonVLs.UP :
+            case CommonVLs.UP:
                 image = imageUp;
                 break;
-            case CommonVLs.RIGHT :
+            case CommonVLs.RIGHT:
                 image = imageRight;
         }
     }
@@ -78,7 +82,7 @@ public abstract class Tank {
     }
 
     protected void changeDirection() {
-        direction = new Random().nextInt(4)+1;
+        direction = new Random().nextInt(4) + 1;
     }
 
     public boolean collisionCheckTank(Tank tank) {
@@ -86,37 +90,39 @@ public abstract class Tank {
     }
 
     private boolean checkCollisionX(Tank tank) {
-        boolean bool = (x <= (tank.getX() + CommonVLs.SIZE_TANK)) && ((x + CommonVLs.SIZE_TANK) >= (tank.getX() + CommonVLs.SIZE_TANK));
-        if (bool) {
-            while (bool) {
-                bool = (x <= (tank.getX() + CommonVLs.SIZE_TANK)) && ((x + CommonVLs.SIZE_TANK) >= (tank.getX() + CommonVLs.SIZE_TANK));
-                ++x;
-            }
-            return true;
-        }
-        bool = ((x + CommonVLs.SIZE_TANK) >= tank.getX()) && ( x <= tank.getX());
-        if (bool) {
-            while (bool) {
-                bool = ((x + CommonVLs.SIZE_TANK) >= tank.getX()) && ( x <= tank.getX());
-                --x;
-            }
-            return true;
-        }
-        return false;
+        boolean bool;
+        boolean check;
+        do {
+            bool = (x <= (tank.getX() + CommonVLs.SIZE_TANK)) && ((x + CommonVLs.SIZE_TANK) >= (tank.getX() + CommonVLs.SIZE_TANK));
+            ++x;
+            check = true;
+        } while (bool);
+
+        do {
+            bool = ((x + CommonVLs.SIZE_TANK) >= tank.getX()) && (x <= tank.getX());
+            --x;
+            check = true;
+        } while (bool);
+        return check;
     }
 
     private boolean checkCollisionY(Tank tank) {
-        boolean
-        if () {
-            return true;
-        }
-        if ((y + CommonVLs.SIZE_TANK >= tank.getY()) && (y <= tank.getY() + CommonVLs.SIZE_TANK)) {
-            return true;
-        }
-        return false;
+        boolean bool;
+        boolean check;
+        do {
+            check = true;
+            bool = (y <= tank.getY() + CommonVLs.SIZE_TANK) && (y + CommonVLs.SIZE_TANK >= tank.getY() + CommonVLs.SIZE_TANK);
+            ++y;
+        } while (bool);
+        do {
+            bool = (y + CommonVLs.SIZE_TANK >= tank.getY()) && (y <= tank.getY() + CommonVLs.SIZE_TANK);
+            --y;
+            check = true;
+        } while (bool);
+        return check;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
@@ -127,9 +133,11 @@ public abstract class Tank {
     public int getDirection() {
         return direction;
     }
+
     public void setDirection(int direction) {
         this.direction = direction;
     }
+
     public int getSpeed() {
         return speed;
     }

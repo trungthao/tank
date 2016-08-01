@@ -4,7 +4,7 @@
 ###Các object chính
 ####Tank
 Có các phương thức
-1.Vẽ tank
+1. Vẽ tank
 2. di chuyển 1 pixel theo hướng định sẵn
 ####TankPlayer (extends Tank)
 di chuyển bằng các phím mũi tên

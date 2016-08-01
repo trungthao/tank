@@ -1,10 +1,8 @@
 package com.uet.trungthao.tank.ui;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
-import com.uet.trungthao.tank.object.Drawing;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Created by JiH on 7/27/2016.
