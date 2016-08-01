@@ -8,10 +8,10 @@ public class CommonVLs {
     public static final int HEIGHT_FRAME = 600;
     public static final int WIDTH_MENU = 300;
     public static final int WIDTH_SCREEN = 600;
-    public static final int UP = 0;
-    public static final int DOWN = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
+    public static final int UP = 1;
+    public static final int DOWN = 2;
+    public static final int LEFT = 3;
+    public static final int RIGHT = 4;
 
     public static final int SIZE_TANK= 30;
     public static final int SIZE_BULLET = 5;

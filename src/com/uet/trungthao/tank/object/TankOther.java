@@ -34,6 +34,7 @@ public class TankOther extends Tank {
             if (collisionCheck()) {
                 changeDirection();
                 changeImage();
+                count = random.nextInt(CommonVLs.WIDTH_SCREEN);
             }
         } else {
             count = random.nextInt(CommonVLs.WIDTH_SCREEN);

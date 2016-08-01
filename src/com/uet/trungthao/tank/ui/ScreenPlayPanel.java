@@ -44,14 +44,14 @@ public class ScreenPlayPanel extends JPanel implements KeyListener {
         tankOtherManager.moveAll();
         bulletManagerPlayer.checkAll(tankOtherManager.getArrayListTank());
         bulletManagerTankOther.drawAll(g2d);
-        /*if (bulletManagerTankOther.checkAll(playerTank)) {
+        if (bulletManagerTankOther.checkAll(playerTank)) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             System.exit(0);
-        }*/
+        }
     }
 
     Thread thread = new Thread(new Runnable() {
