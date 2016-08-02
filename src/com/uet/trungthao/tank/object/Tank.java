@@ -16,7 +16,7 @@ public abstract class Tank {
     protected Image image, imageUp, imageDown, imageLeft, imageRight;
     protected int direction;
     protected int speed = 10;
-    private boolean notMove;
+    protected int collisionTank;
 
     public Tank(int x, int y) {
         this.x = x;
@@ -35,7 +35,6 @@ public abstract class Tank {
 
 
     public void move() {
-        if (notMove) return;
         switch (direction) {
             case CommonVLs.UP:
                 if (y <= 0) break;
@@ -54,10 +53,6 @@ public abstract class Tank {
                 ++x;
                 break;
         }
-    }
-
-    protected void changeDirection() {
-        direction = new Random().nextInt(4)+1;
     }
 
     protected void changeImage() {
@@ -101,29 +96,29 @@ public abstract class Tank {
      * false nếu không va chạm
      */
     public boolean collisionCheckTank(Tank tank) {
-        return (checkCollisionX(tank) && checkCollisionY(tank));
+        return (checkCollisionX(tank.getX()) && checkCollisionY(tank.getY()));
     }
 
-    private boolean checkCollisionX(Tank tank) {
+    private boolean checkCollisionX(int x) {
         boolean bool;
-        bool = (x <= (tank.getX() + CommonVLs.SIZE_TANK)) && ((x + CommonVLs.SIZE_TANK) >= (tank.getX() + CommonVLs.SIZE_TANK));
+        bool = (this.x <= (x + CommonVLs.SIZE_TANK)) && ((this.x + CommonVLs.SIZE_TANK) >= (x + CommonVLs.SIZE_TANK));
         if (bool) {
             return true;
         }
-        bool = ((x + CommonVLs.SIZE_TANK) >= tank.getX()) && (x <= tank.getX());
+        bool = ((this.x + CommonVLs.SIZE_TANK) >= x) && (this.x <= x);
         if (bool) {
             return true;
         }
         return false;
     }
 
-    private boolean checkCollisionY(Tank tank) {
+    private boolean checkCollisionY(int y) {
         boolean bool;
-        bool = (y <= tank.getY() + CommonVLs.SIZE_TANK) && (y + CommonVLs.SIZE_TANK >= tank.getY() + CommonVLs.SIZE_TANK);
+        bool = (this.y <= y + CommonVLs.SIZE_TANK) && (this.y + CommonVLs.SIZE_TANK >= y + CommonVLs.SIZE_TANK);
         if (bool) {
             return true;
         }
-        bool = (y + CommonVLs.SIZE_TANK >= tank.getY()) && (y <= tank.getY() + CommonVLs.SIZE_TANK);
+        bool = (this.y + CommonVLs.SIZE_TANK >= y) && (this.y <= y + CommonVLs.SIZE_TANK);
         if (bool) {
             return true;
         }
@@ -146,7 +141,7 @@ public abstract class Tank {
         return speed;
     }
 
-    public void setNotMove(boolean notMove) {
-        this.notMove = notMove;
+    protected void changeDirection() {
+        direction = new Random().nextInt(4)+1;
     }
 }
