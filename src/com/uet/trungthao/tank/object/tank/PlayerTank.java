@@ -1,4 +1,4 @@
-package com.uet.trungthao.tank.object;
+package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
 

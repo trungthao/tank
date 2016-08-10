@@ -1,6 +1,9 @@
-package com.uet.trungthao.tank.object;
+package com.uet.trungthao.tank.object.bullet;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
+import com.uet.trungthao.tank.object.tank.PlayerTank;
+import com.uet.trungthao.tank.object.tank.Tank;
+import com.uet.trungthao.tank.object.tank.TankOther;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.uet.trungthao.tank.object;
+package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
 
@@ -16,10 +16,11 @@ public class TankOther extends Tank {
 
     public TankOther(int x, int y) {
         super(x, y);
-        imageUp = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "player_green_1.png")).getImage();
-        imageDown = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "player_green_2.png")).getImage();
-        imageLeft = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "player_green_3.png")).getImage();
-        imageRight = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "player_green_4.png")).getImage();
+        CommonVLs commonVLs = new CommonVLs();
+        imageUp = commonVLs.getImage("player_green_1.png");
+        imageDown = commonVLs.getImage("player_green_2.png");
+        imageLeft = commonVLs.getImage("player_green_3.png");
+        imageRight = commonVLs.getImage("player_green_4.png");
         image = imageRight;
     }
 

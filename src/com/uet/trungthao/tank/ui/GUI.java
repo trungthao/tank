@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public class GUI extends JFrame{
     public GUI() {
-        this.setResizable(false);
+//        this.setResizable(false);
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(200,0, CommonVLs.WIDTH_FRAME, CommonVLs.HEIGHT_FRAME);

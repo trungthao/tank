@@ -1,6 +1,8 @@
-package com.uet.trungthao.tank.object;
+package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
+import com.uet.trungthao.tank.object.bullet.Bullet;
+import com.uet.trungthao.tank.object.bullet.BulletManager;
 
 import java.awt.*;
 import java.util.ArrayList;

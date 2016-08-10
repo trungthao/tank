@@ -1,8 +1,7 @@
-package com.uet.trungthao.tank.object;
+package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
@@ -21,10 +20,11 @@ public abstract class Tank {
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
-        imageRight = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "bossyellow_4.png")).getImage();
-        imageLeft = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "bossyellow_3.png")).getImage();
-        imageDown = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "bossyellow_2.png")).getImage();
-        imageUp = new ImageIcon(getClass().getResource(CommonVLs.PACKAGE_PATH + "bossyellow_1.png")).getImage();
+        CommonVLs commonVLs = new CommonVLs();
+        imageRight = commonVLs.getImage("bossyellow_4.png");
+        imageLeft = commonVLs.getImage("bossyellow_3.png");
+        imageDown = commonVLs.getImage("bossyellow_2.png");
+        imageUp = commonVLs.getImage("bossyellow_1.png");
         image = imageRight;
         direction = CommonVLs.RIGHT;
     }
