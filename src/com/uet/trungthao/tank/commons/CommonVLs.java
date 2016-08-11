@@ -16,6 +16,11 @@ public class CommonVLs {
     public static final int RIGHT = 4;
 
     public static final int BRICK_TYPE = 0;
+    public static final int BRICK_SIZE= 30;
+
+    public static final int TANK_EXFIORE = 1;
+    public static final int BULLET_EXFIORE = 2;
+    public static final int ANIMATION_SIZE = 30;
 
     public static final int SIZE_TANK= 30;
     public static final int SIZE_BULLET = 5;

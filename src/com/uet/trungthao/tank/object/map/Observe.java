@@ -10,19 +10,21 @@ import java.awt.*;
 public class Observe {
     private int x;
     private int y;
-    private int size = CommonVLs.SIZE_TANK;
+    private int size;
     private int type;
     private java.awt.Image img;
 
     public Observe(int x, int y, int type) {
         this.x = x;
         this.y = y;
+        this.size = CommonVLs.BRICK_SIZE;
         this.type = type;
         if (this.type == CommonVLs.BRICK_TYPE) {
             CommonVLs commonVLs = new CommonVLs();
-            this.img = commonVLs.getImage("brick1.png");
+            img = commonVLs.getImage("brick1.png");
         }
     }
+
 
     public void draw(Graphics2D g2d) {
         g2d.drawImage(img, x * this.size, y * this.size, this.size, this.size, null);
@@ -30,30 +32,57 @@ public class Observe {
 
     public boolean isObjInside(int xObj, int yObj, int sizeObj) {
         int x = this.x * this.size;
-        this.y = this.y * this.size;
+        int y = this.y * this.size;
 
         if (isPointInside(xObj, yObj, x,y,this.size)
                 || isPointInside(xObj + sizeObj, yObj, x, y, this.size)
                 || isPointInside(xObj, yObj + sizeObj, x, y, this.size)
-                || isPointInside(xObj + sizeObj, yObj + sizeObj, x, y, this.size))
+                || isPointInside(xObj + sizeObj, yObj + sizeObj, x, y, this.size)) {
             return true;
-        if (isPointInside(x,y,xObj,yObj, sizeObj)
-            || isPointInside(x + this.size, y, xObj, yObj, sizeObj)
-            || isPointInside(x, y + this.size, xObj, yObj, sizeObj)
-            || isPointInside(x + this.size, y + this.size, xObj, yObj, sizeObj))
-            return true;
+        }
         return false;
     }
 
     private boolean isPointInside(int xObj, int yObj, int x, int y, int size) {
         int bottomPoint = y + this.size;
         int rightPoint = x + this.size;
-        if (xObj > x
-            && yObj > y
-            && xObj < rightPoint
-            && yObj < bottomPoint) {
+        if (xObj >= x
+            && yObj >= y
+            && xObj <= rightPoint
+            && yObj <= bottomPoint)
             return true;
-        }
         return false;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

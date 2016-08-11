@@ -1,8 +1,12 @@
 package com.uet.trungthao.tank.object.bullet;
 
+import com.uet.trungthao.tank.commons.CommonVLs;
+import com.uet.trungthao.tank.object.AnimationManager;
+import com.uet.trungthao.tank.object.map.MapManager;
 import com.uet.trungthao.tank.object.tank.PlayerTank;
-import com.uet.trungthao.tank.object.tank.TankOther;
+import com.uet.trungthao.tank.object.tank.TankEnemy;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -25,14 +29,35 @@ public class BulletManager {
         }
     }
 
-    public void checkAll(ArrayList<TankOther> arrayListTank) {
+    /**
+     * Kiểm tra và tạo ra hiệu ứng khi đạn bắn đạn trúng tank
+     * @param arrayListTank
+     * @param animMgr
+     */
+    public void checkAll(ArrayList<TankEnemy> arrayListTank, AnimationManager animMgr) {
         for (int i = 0; i < arrayListBullet.size(); i++) {
-            int j = arrayListBullet.get(i).check(arrayListTank);
-            if (j != -1) {
-                arrayListTank.remove(j);
+            int indexTaDie = arrayListBullet.get(i).check(arrayListTank);
+            if (indexTaDie != -1) {
+                TankEnemy tankDie = arrayListTank.get(indexTaDie);
+                animMgr.addAnim(CommonVLs.TANK_EXFIORE, tankDie.getX(), tankDie.getY());
+                arrayListTank.remove(indexTaDie);
                 arrayListBullet.remove(i);
-
                 continue;
+            }
+        }
+    }
+
+    /**
+     * Kiểm tra và tạo hiệu ứng khi đạn bắn trúng tường
+     * @param mapMgr
+     * @param animMgr
+     */
+    public void checkAll(MapManager mapMgr, AnimationManager animMgr) {
+        for (int i = 0; i < arrayListBullet.size(); i++) {
+            Bullet b = arrayListBullet.get(i);
+            if (mapMgr.checkInsise(b.getX(), b.getY(), CommonVLs.SIZE_BULLET)) {
+                animMgr.addAnim(CommonVLs.BULLET_EXFIORE,b.getX() - CommonVLs.ANIMATION_SIZE/2, b.getY() - CommonVLs.ANIMATION_SIZE/2);
+                arrayListBullet.remove(i);
             }
         }
     }

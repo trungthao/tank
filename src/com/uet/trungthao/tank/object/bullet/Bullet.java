@@ -3,7 +3,7 @@ package com.uet.trungthao.tank.object.bullet;
 import com.uet.trungthao.tank.commons.CommonVLs;
 import com.uet.trungthao.tank.object.tank.PlayerTank;
 import com.uet.trungthao.tank.object.tank.Tank;
-import com.uet.trungthao.tank.object.tank.TankOther;
+import com.uet.trungthao.tank.object.tank.TankEnemy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class Bullet {
 
     private int x,y;
     private Image image;
-    public static int speed = 3;
+    public static int speed = 5;
     private int direction;
 
     public Bullet(int x, int y, int direction) {
@@ -49,21 +49,21 @@ public class Bullet {
         switch (direction) {
             case CommonVLs.LEFT:
                 if (x < 0) return false;
-                x--; break;
+                x -= speed; break;
             case CommonVLs.DOWN:
                 if (y > CommonVLs.HEIGHT_FRAME) return false;
-                y++; break;
+                y += speed; break;
             case CommonVLs.RIGHT:
                 if (x > CommonVLs.WIDTH_SCREEN) return false;
-                x++; break;
+                x += speed; break;
             case CommonVLs.UP:
                 if (y < 0) return false;
-                --y; break;
+                y -= speed; break;
         }
         return true;
     }
 
-    public int check(ArrayList<TankOther> arrayList) {
+    public int check(ArrayList<TankEnemy> arrayList) {
         for (int i = 0; i < arrayList.size(); ++i) {
             Tank tank = arrayList.get(i);
             if ((x >= tank.getX()) && (x <= tank.getX() + CommonVLs.SIZE_TANK))
@@ -84,5 +84,17 @@ public class Bullet {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 }

@@ -14,12 +14,14 @@ public abstract class Tank {
     protected int x, y;
     protected Image image, imageUp, imageDown, imageLeft, imageRight;
     protected int direction;
-    protected int speed = 10;
-    protected int collisionTank;
+    protected int speed = 3;
+    int oldX, oldY;
 
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
+        oldX = x;
+        oldX = y;
         CommonVLs commonVLs = new CommonVLs();
         imageRight = commonVLs.getImage("bossyellow_4.png");
         imageLeft = commonVLs.getImage("bossyellow_3.png");
@@ -35,27 +37,29 @@ public abstract class Tank {
 
 
     public void move() {
+        oldX = this.x;
+        oldY = this.y;
         switch (direction) {
             case CommonVLs.UP:
-                if (y <= 0) break;
-                --y;
+                y -= speed;
                 break;
             case CommonVLs.DOWN:
-                if (y >= CommonVLs.HEIGHT_FRAME - 70) break;
-                ++y;
+                y += speed;
                 break;
             case CommonVLs.LEFT:
-                if (x <= 0) break;
-                --x;
+                x -= speed;
                 break;
             case CommonVLs.RIGHT:
-                if (x >= CommonVLs.WIDTH_SCREEN - 30) break;
-                ++x;
-                break;
+                x += speed;
         }
     }
 
-    protected void changeImage() {
+    public void noMove() {
+        this.x = oldX;
+        this.y = oldY;
+    }
+
+    public void changeImage() {
         switch (direction) {
             case CommonVLs.DOWN:
                 image = imageDown;
@@ -71,77 +75,62 @@ public abstract class Tank {
         }
     }
 
-    /**
-     * Kiểm tra xem tank có vượt biên không
-     * @return
-     * true nếu đến biên
-     * false nếu chưa đến biên
-     */
-    protected boolean collisionCheck() {
-        return (y >= CommonVLs.HEIGHT_FRAME - 70) || (x >= CommonVLs.WIDTH_SCREEN - 30) || (x <= 0) || (y <= 0);
-    }
-
-    /**
-     *
-     */
-    protected void drawBoom() {
-
-    }
-
-    /**
-     * Kiểm tra 2 tank có va chạm nhau không
-     * @param tank
-     * @return
-     * true nếu có va chạm
-     * false nếu không va chạm
-     */
-    public boolean collisionCheckTank(Tank tank) {
-        return (checkCollisionX(tank.getX()) && checkCollisionY(tank.getY()));
-    }
-
-    private boolean checkCollisionX(int x) {
-        boolean bool;
-        bool = (this.x <= (x + CommonVLs.SIZE_TANK)) && ((this.x + CommonVLs.SIZE_TANK) >= (x + CommonVLs.SIZE_TANK));
-        if (bool) {
-            return true;
-        }
-        bool = ((this.x + CommonVLs.SIZE_TANK) >= x) && (this.x <= x);
-        if (bool) {
+    protected boolean isObjInside(int xObj, int yObj) {
+        if (isPointInside(xObj, yObj)
+                || isPointInside(xObj + CommonVLs.SIZE_TANK, yObj)
+                || isPointInside(xObj, yObj + CommonVLs.SIZE_TANK)
+                || isPointInside(xObj + CommonVLs.SIZE_TANK, yObj + CommonVLs.SIZE_TANK)) {
             return true;
         }
         return false;
     }
 
-    private boolean checkCollisionY(int y) {
-        boolean bool;
-        bool = (this.y <= y + CommonVLs.SIZE_TANK) && (this.y + CommonVLs.SIZE_TANK >= y + CommonVLs.SIZE_TANK);
-        if (bool) {
-            return true;
-        }
-        bool = (this.y + CommonVLs.SIZE_TANK >= y) && (this.y <= y + CommonVLs.SIZE_TANK);
-        if (bool) {
+    private boolean isPointInside(int xObj, int yObj) {
+        int bottomLeft = this.y + CommonVLs.SIZE_TANK;
+        int topRight = this.x + CommonVLs.SIZE_TANK;
+
+        if (xObj >= this.x
+                && yObj >= this.y
+                && xObj <= topRight
+                && yObj <= bottomLeft) {
             return true;
         }
         return false;
+    }
+
+    public void changeDirection() {
+        direction = new Random().nextInt(4) + 1;
     }
 
     public int getX() {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getDirection() {
         return direction;
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
     public int getSpeed() {
         return speed;
     }
 
-    protected void changeDirection() {
-        direction = new Random().nextInt(4)+1;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

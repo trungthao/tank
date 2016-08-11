@@ -12,7 +12,7 @@ public class PlayerTank extends Tank {
         super(x,y);
     }
 
-    public void key(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 direction = CommonVLs.LEFT;
@@ -25,20 +25,7 @@ public class PlayerTank extends Tank {
                 break;
             case KeyEvent.VK_DOWN:
                 direction = CommonVLs.DOWN;
-                break;
         }
         changeImage();
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 }
