@@ -63,8 +63,10 @@ public class BulletManager {
     }
 
     public boolean checkAll(PlayerTank playerTank) {
-        for (Bullet b : arrayListBullet) {
+        for (int i = 0; i < arrayListBullet.size(); ++i) {
+            Bullet b = arrayListBullet.get(i);
             if (b.check(playerTank)) {
+                arrayListBullet.remove(i);
                 return true;
             }
         }

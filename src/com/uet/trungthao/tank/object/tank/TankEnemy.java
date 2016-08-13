@@ -11,7 +11,7 @@ import java.util.Random;
 public class TankEnemy extends Tank {
     private Random random = new Random();
     private int timeMove = random.nextInt(CommonVLs.WIDTH_FRAME/CommonVLs.SIZE_TANK) + 10;
-    private int timeShoot = random.nextInt(300);
+    private int timeShoot = random.nextInt(200);
 
     public TankEnemy(int x, int y) {
         super(x, y);
@@ -45,7 +45,7 @@ public class TankEnemy extends Tank {
             --timeShoot;
             return false;
         } else {
-            timeShoot = random.nextInt(300);
+            timeShoot = random.nextInt(200);
             return true;
         }
     }

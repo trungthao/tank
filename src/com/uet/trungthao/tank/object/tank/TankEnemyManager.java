@@ -17,11 +17,13 @@ public class TankEnemyManager {
 
     private Random random;
 
-    public TankEnemyManager() {
-        init();
+    public TankEnemyManager(MapManager mapMgr, PlayerTank playerTank) {
+        init(mapMgr, playerTank);
     }
 
-    private void init() {
+    private void init(MapManager mapMgr,PlayerTank playerTank) {
+        int playX = playerTank.getX();
+        int playY = playerTank.getY();
         arrayListTank = new ArrayList<>();
         for (int i = 0; i < 10; ++i) {
             int x, y;
@@ -32,15 +34,17 @@ public class TankEnemyManager {
                 x = random.nextInt(400) + CommonVLs.BRICK_SIZE;
                 y = random.nextInt(400) + CommonVLs.BRICK_SIZE;
                 for (TankEnemy j : arrayListTank) {
-                    if (j.isObjInside(x,y)) {
+                    if (j.isObjInside(x, y)
+                            || mapMgr.checkInsise(x,y,CommonVLs.SIZE_TANK)
+                            || (x == playX && y == playY)) {
                         boolLocal = true;
                         break;
                     }
                 }
+
             } while (boolLocal);
             arrayListTank.add(new TankEnemy(x, y));
         }
-        System.out.println(arrayListTank.size());
     }
 
     public void drawAll(Graphics2D g2d) {
@@ -57,7 +61,6 @@ public class TankEnemyManager {
                 if (i != j) {
                     TankEnemy tank2 = arrayListTank.get(j);
                     if (tank1.isObjInside(tank2.getX(), tank2.getY())) {
-//                        System.out.println("Va cham");
                         tank1.changeDirection();
                         tank1.changeImage();
                         tank1.noMove();
