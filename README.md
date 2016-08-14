@@ -8,6 +8,7 @@
 5. Xử lý va chạm giữa playerTank với các enemyTank và các enemyTank với nhau
 6. Xử lý các tank va chạm vào gạch
 7. Tạo hiểu ứng nổ khi đạn trúng tường hoặc trúng tank
+8. làm button play, pause
 
 ##Sắp làm
-1. Thiết lập các button play, reset, pause
+1. Thiết lập các button reset, exit

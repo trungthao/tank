@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.ListenerMenu, Runnable {
 
@@ -41,7 +42,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         countAnim = 0;
         isPlaying = true;
         mapMgr = new MapManager();
-        playerTank = new PlayerTank(CommonVLs.BRICK_SIZE + 10, CommonVLs.BRICK_SIZE + 10);
+        playerTank = new PlayerTank(35, 35);
         bullMgrPlay = new BulletManager();
         bullMgrEnemy = new BulletManager();
         enemyMgr = new TankEnemyManager(mapMgr, playerTank);
@@ -59,6 +60,13 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
 
     private void update() {
 
+        /**
+         * Update cho tankPlayer
+         */
+        // Kiem tra dan trung tankEnemy
+        bullMgrPlay.checkAll(enemyMgr.getArrayListTank(), animMgr);
+        // Kiem tra dan trung gach
+        bullMgrPlay.checkAll(mapMgr, animMgr);
 
         /**
          * Update cho các tankEnemy
@@ -72,33 +80,13 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
 
         if (enemyMgr.isEmpty()) {
             JOptionPane.showMessageDialog(null, "You Win ... !!!");
-            Thread thread1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    initComponent();
-                }
-            });
-            thread1.start();
+            newGame();
         }
 
         if (bullMgrEnemy.checkAll(playerTank)) {
             JOptionPane.showMessageDialog(null, "Enemy Thắng");
-            Thread thread1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    initComponent();
-                }
-            });
-            thread1.start();
+            newGame();
         }
-
-        /**
-         * Update cho tankPlayer
-         */
-        // Kiem tra dan trung tankEnemy
-        bullMgrPlay.checkAll(enemyMgr.getArrayListTank(), animMgr);
-        // Kiem tra dan trung gach
-        bullMgrPlay.checkAll(mapMgr, animMgr);
 
         /**
          * xử lý sự kiện nhấn dữ phím di chuyển để di chuyển
@@ -184,7 +172,19 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
     }
 
     @Override
+    public void newGame() {
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initComponent();
+            }
+        });
+        thread1.start();
+    }
+
+    @Override
     public void run() {
+        System.out.println("Start");
         while (isPlaying) {
             loopGame();
             try {
@@ -193,5 +193,6 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
                 e.printStackTrace();
             }
         }
+        System.out.println("Stop");
     }
 }

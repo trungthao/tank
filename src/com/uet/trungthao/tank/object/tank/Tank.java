@@ -14,14 +14,15 @@ public abstract class Tank {
     protected int x, y;
     protected Image image, imageUp, imageDown, imageLeft, imageRight;
     protected int direction;
-    protected int speed = 3;
-    int oldX, oldY;
+    protected int speed = 4;
+
+    // (35,35) là vị trí đầu tiên của playerTank
+    // cần đặt như vậy vì nếu không khi enemy va chạm vào player nó sẽ nhảy về (0,0)
+    int oldX = 35, oldY = 35;
 
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
-        oldX = x;
-        oldX = y;
         CommonVLs commonVLs = new CommonVLs();
         imageRight = commonVLs.getImage("bossyellow_4.png");
         imageLeft = commonVLs.getImage("bossyellow_3.png");

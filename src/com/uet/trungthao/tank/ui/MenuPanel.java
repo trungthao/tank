@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by JiH on 7/27/2016.
  */
 public class MenuPanel extends JPanel implements ActionListener {
-    JButton pauseOrPlay;
+    JButton pauseOrPlay, newGame;
     ListenerMenu listener;
     ImageIcon iconPlay, iconPause;
 
@@ -33,11 +33,24 @@ public class MenuPanel extends JPanel implements ActionListener {
         iconPause = new ImageIcon(bufImg.getScaledInstance(50, 50, bufImg.SCALE_SMOOTH));
         pauseOrPlay = new JButton("Tạm dừng", iconPause);
         pauseOrPlay.setBounds(10, CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
-        pauseOrPlay.addActionListener(this);
 
         bufImg = commonVLs.getBufferImage("playGame.png");
         iconPlay = new ImageIcon(bufImg.getScaledInstance(50,50,bufImg.SCALE_SMOOTH));
+
+        JLabel space1 = new JLabel();
+        space1.setBounds(10,2 * CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
+
+        bufImg = commonVLs.getBufferImage("batDau.png");
+        ImageIcon iconNewGame = new ImageIcon(bufImg.getScaledInstance(CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON, bufImg.SCALE_SMOOTH));
+        newGame = new JButton(iconNewGame);
+        newGame.setBounds(10, 3 * CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
+
+        pauseOrPlay.addActionListener(this);
+        newGame.addActionListener(this);
+
         this.add(pauseOrPlay);
+        this.add(space1);
+        this.add(newGame);
     }
 
 
@@ -55,10 +68,16 @@ public class MenuPanel extends JPanel implements ActionListener {
                 pauseOrPlay.setText("Chơi tiếp");
             }
         }
+
+        if (button == newGame) {
+            listener.newGame();
+            newGame.setFocusable(false);
+        }
     }
 
     interface ListenerMenu {
         boolean pausePlay();
+        void newGame();
     }
 
     public void setListener(ListenerMenu listener) {

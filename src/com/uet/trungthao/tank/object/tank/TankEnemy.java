@@ -15,7 +15,7 @@ public class TankEnemy extends Tank {
 
     public TankEnemy(int x, int y) {
         super(x, y);
-        this.setSpeed(1);
+        this.setSpeed(2);
         init();
     }
 
