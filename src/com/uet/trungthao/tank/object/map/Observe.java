@@ -19,9 +19,13 @@ public class Observe {
         this.y = y;
         this.size = CommonVLs.BRICK_SIZE;
         this.type = type;
+        CommonVLs commonVLs = new CommonVLs();
         if (this.type == CommonVLs.BRICK_TYPE) {
-            CommonVLs commonVLs = new CommonVLs();
             img = commonVLs.getImage("brick1.png");
+        } else if (this.type == CommonVLs.WATER_TYPE) {
+            img = commonVLs.getImage("water.png");
+        } else if (this.type == CommonVLs.TREE_TYPE) {
+            img = commonVLs.getImage("tree.png");
         }
     }
 

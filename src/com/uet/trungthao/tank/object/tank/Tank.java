@@ -15,6 +15,7 @@ public abstract class Tank {
     protected Image image, imageUp, imageDown, imageLeft, imageRight;
     protected int direction;
     protected int speed = 4;
+    protected boolean hidden;
 
     // (35,35) là vị trí đầu tiên của playerTank
     // cần đặt như vậy vì nếu không khi enemy va chạm vào player nó sẽ nhảy về (0,0)
@@ -30,10 +31,13 @@ public abstract class Tank {
         imageUp = commonVLs.getImage("bossyellow_1.png");
         image = imageRight;
         direction = CommonVLs.RIGHT;
+        hidden = false;
     }
 
     public void draw(Graphics2D g2d) {
-        g2d.drawImage(this.image, x, y, CommonVLs.SIZE_TANK, CommonVLs.SIZE_TANK, null);
+        if (!hidden) {
+            g2d.drawImage(this.image, x, y, CommonVLs.SIZE_TANK, CommonVLs.SIZE_TANK, null);
+        }
     }
 
 
@@ -133,5 +137,13 @@ public abstract class Tank {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public boolean getHidden() {
+        return hidden;
     }
 }

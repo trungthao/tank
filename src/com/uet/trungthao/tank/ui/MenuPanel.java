@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by JiH on 7/27/2016.
  */
 public class MenuPanel extends JPanel implements ActionListener {
-    JButton pauseOrPlay, newGame;
+    JButton pauseOrPlay, newGame, exitGame;
     ListenerMenu listener;
     ImageIcon iconPlay, iconPause;
 
@@ -45,12 +45,22 @@ public class MenuPanel extends JPanel implements ActionListener {
         newGame = new JButton(iconNewGame);
         newGame.setBounds(10, 3 * CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
 
+        JLabel space2 = new JLabel();
+        space2.setBounds(10,4 * CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
+
+        bufImg = commonVLs.getBufferImage("thoatGame.png");
+        ImageIcon iconExitGame = new ImageIcon(bufImg.getScaledInstance(CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON, bufImg.SCALE_SMOOTH));
+        exitGame = new JButton(iconExitGame);
+        exitGame.setBounds(10, 5 * CommonVLs.HEIGHT_BUTTON, CommonVLs.WIDTH_BUTTON, CommonVLs.HEIGHT_BUTTON);
+
         pauseOrPlay.addActionListener(this);
         newGame.addActionListener(this);
 
         this.add(pauseOrPlay);
         this.add(space1);
         this.add(newGame);
+        this.add(space2);
+        this.add(exitGame);
     }
 
 
@@ -78,6 +88,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     interface ListenerMenu {
         boolean pausePlay();
         void newGame();
+        void exitGame();
     }
 
     public void setListener(ListenerMenu listener) {

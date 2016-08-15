@@ -1,7 +1,5 @@
 package com.uet.trungthao.tank.commons;
 
-import com.uet.trungthao.tank.object.audio.Audio;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -43,12 +41,26 @@ public class CommonVLs {
     /**
     * type
      */
+    // Map
     public static final int BRICK_TYPE = 0;
+    public static final int WATER_TYPE = 1;
+    public static final int TREE_TYPE = 2;
+
+    // Animation
     public static final int TANK_EXFIORE = 1;
     public static final int BULLET_EXFIORE = 2;
 
+    // Audio: shoot, newGame, pause, endGame, explosionTank, explosionBrick, move;
+    public static final int SHOOT = 0;
+    public static final int NEW_GAME = 1;
+    public static final int PAUSE = 2;
+    public static final int ENDGAME = 3;
+    public static final int EXPLOSION_TANK = 4;
+    public static final int EXPLOSION_BRICK = 5;
+    public static final int MOVE = 6;
+
     /**
-     * get File, Image, Audio
+     * get File, Image, audio
      */
     private final String PACKAGE_PATH = "/RESOURCE/Image/";
     private final String PACKAGE_SOUND = "/RESOURCE/sound/";

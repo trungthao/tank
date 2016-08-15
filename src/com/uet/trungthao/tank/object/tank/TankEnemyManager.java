@@ -1,6 +1,7 @@
 package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
+import com.uet.trungthao.tank.object.audio.Audio;
 import com.uet.trungthao.tank.object.bullet.Bullet;
 import com.uet.trungthao.tank.object.bullet.BulletManager;
 import com.uet.trungthao.tank.object.map.MapManager;
@@ -35,7 +36,7 @@ public class TankEnemyManager {
                 y = random.nextInt(400) + CommonVLs.BRICK_SIZE;
                 for (TankEnemy j : arrayListTank) {
                     if (j.isObjInside(x, y)
-                            || mapMgr.checkInsise(x,y,CommonVLs.SIZE_TANK)
+                            || mapMgr.checkInsiseBrick(x,y,CommonVLs.SIZE_TANK)
                             || (x == playX && y == playY)) {
                         boolLocal = true;
                         break;
@@ -53,7 +54,7 @@ public class TankEnemyManager {
         }
     }
 
-    public void moveAll(MapManager mapMgr) {
+    public void moveAll() {
         for (int i = 0; i < arrayListTank.size(); ++i) {
             TankEnemy tank1 = arrayListTank.get(i);
             tank1.move();
@@ -90,7 +91,13 @@ public class TankEnemyManager {
     public void checkMap(MapManager mapMgr) {
         for (int i = 0; i < arrayListTank.size(); i++) {
             TankEnemy tank = arrayListTank.get(i);
-            if (mapMgr.checkInsise(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
+            if (mapMgr.checkInsideTree(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
+                tank.setHidden(true);
+            } else {
+                tank.setHidden(false);
+            }
+            if (mapMgr.checkInsiseBrick(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)
+                    || mapMgr.checkInsideWater(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
                 tank.changeDirection();
                 tank.changeImage();
                 tank.noMove();
@@ -98,11 +105,12 @@ public class TankEnemyManager {
         }
     }
 
-    public void autoShootAll(BulletManager bulletManager) {
+    public void autoShootAll(BulletManager bulletManager, Audio audio) {
         for (int i = 0; i < arrayListTank.size(); i++) {
             TankEnemy tankOther = arrayListTank.get(i);
             boolean bool = tankOther.autoShoot();
             if (bool) {
+                audio.play(CommonVLs.SHOOT);
                 bulletManager.add(new Bullet(tankOther.getX(), tankOther.getY(), tankOther.getDirection()));
             }
         }

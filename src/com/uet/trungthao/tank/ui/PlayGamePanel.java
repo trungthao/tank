@@ -2,12 +2,14 @@ package com.uet.trungthao.tank.ui;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
 import com.uet.trungthao.tank.object.AnimationManager;
+import com.uet.trungthao.tank.object.audio.Audio;
 import com.uet.trungthao.tank.object.bullet.Bullet;
 import com.uet.trungthao.tank.object.bullet.BulletManager;
 import com.uet.trungthao.tank.object.map.MapManager;
 import com.uet.trungthao.tank.object.tank.PlayerTank;
 import com.uet.trungthao.tank.object.tank.TankEnemy;
 import com.uet.trungthao.tank.object.tank.TankEnemyManager;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +27,10 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
     private boolean press;
     private MapManager mapMgr;
     private AnimationManager animMgr;
-    private boolean first = true;
+    private Audio audio;
 
     private int countAnim = 0;
+    private boolean die, enemyDie;
 
     public PlayGamePanel() {
         initComponent();
@@ -35,7 +38,9 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
     }
 
     private void initComponent() {
-
+        die = false;
+        audio = new Audio();
+        audio.play(CommonVLs.NEW_GAME);
         this.setVisible(true);
         press = false;
         countSpace = 0;
@@ -51,6 +56,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         this.setBounds(0, 0, CommonVLs.WIDTH_SCREEN, CommonVLs.HEIGHT_FRAME);
         setFocusable(true);
         addKeyListener(this);
+        enemyDie = false;
     }
 
     private void loopGame() {
@@ -64,28 +70,35 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
          * Update cho tankPlayer
          */
         // Kiem tra dan trung tankEnemy
-        bullMgrPlay.checkAll(enemyMgr.getArrayListTank(), animMgr);
+        bullMgrPlay.checkAll(enemyMgr.getArrayListTank(), animMgr, audio);
         // Kiem tra dan trung gach
-        bullMgrPlay.checkAll(mapMgr, animMgr);
+        bullMgrPlay.checkAll(mapMgr, animMgr, audio);
 
         /**
          * Update cho các tankEnemy
          */
-        enemyMgr.moveAll(mapMgr);
+        enemyMgr.moveAll();
         enemyMgr.checkMap(mapMgr);
-        enemyMgr.autoShootAll(bullMgrEnemy);
+        enemyMgr.autoShootAll(bullMgrEnemy, audio);
         // kiem tra dan ban trung gach
-        bullMgrEnemy.checkAll(mapMgr, animMgr);
+        bullMgrEnemy.checkAll(mapMgr, animMgr, audio);
+        // Kiem tra va xu ly va cham giua tankPlayer và enemyTank
         enemyMgr.processCollision(playerTank);
 
-        if (enemyMgr.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "You Win ... !!!");
-            newGame();
+        if (enemyMgr.isEmpty() && !enemyDie) {
+            enemyDie = true;
+            audio.stop();
+            audio.play(CommonVLs.ENDGAME);
+            int option = JOptionPane.showConfirmDialog(null,"Bạn muốn chơi tiếp ko???","Chiến thắng", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                newGame();
+            } else {
+                exitGame();
+            }
         }
 
-        if (bullMgrEnemy.checkAll(playerTank)) {
-            JOptionPane.showMessageDialog(null, "Enemy Thắng");
-            newGame();
+        if (bullMgrEnemy.checkAll(playerTank, animMgr, audio)) {
+            die = true;
         }
 
         /**
@@ -95,8 +108,15 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
          */
         if (press) {
             playerTank.move();
+            audio.play(CommonVLs.MOVE);
             // Kiểm tra va chạm gạch hay chưa
-            if (mapMgr.checkInsise(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
+            if (mapMgr.checkInsideTree(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
+                playerTank.setHidden(true);
+            } else {
+                playerTank.setHidden(false);
+            }
+            if (mapMgr.checkInsiseBrick(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)
+                    || mapMgr.checkInsideWater(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
                 // Xét hướng gây ra va chạm và dịch chuyển trở lại vị trí cữ => tank đứng yên
                 playerTank.noMove();
             }
@@ -139,10 +159,17 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_K) {
+            ArrayList arr = enemyMgr.getArrayListTank();
+            for (int i = 0; i < arr.size(); i++) {
+                arr.remove(i);
+            }
+        }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             ++countSpace;
             if (countSpace % 5 == 0) {
                 bullMgrPlay.add(new Bullet(playerTank.getX(), playerTank.getY(), playerTank.getDirection()));
+                audio.play(CommonVLs.SHOOT);
                 countSpace = 0;
             }
         } else {
@@ -156,6 +183,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         press = false;
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             bullMgrPlay.add(new Bullet(playerTank.getX(), playerTank.getY(), playerTank.getDirection()));
+            audio.play(CommonVLs.SHOOT);
         } else {
             playerTank.keyReleased(e);
         }
@@ -167,6 +195,9 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         if (isPlaying) {
             Thread thread2 = new Thread(this);
             thread2.start();
+        } else {
+            audio.stop();
+            audio.play(CommonVLs.PAUSE);
         }
         return this.isPlaying;
     }
@@ -176,6 +207,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
+                audio.stop();
                 initComponent();
             }
         });
@@ -183,9 +215,33 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
     }
 
     @Override
+    public void exitGame() {
+        System.exit(0);
+    }
+
+    @Override
     public void run() {
-        System.out.println("Start");
         while (isPlaying) {
+            if (die) {
+                for (int i = 0; i < 100; i++) {
+                    loopGame();
+                    if (i > 50) {
+                        audio.stop();
+                    }
+                    try {
+                        Thread.sleep(17);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                audio.play(CommonVLs.ENDGAME);
+                int option = JOptionPane.showConfirmDialog(null,"Thua rồi. Chơi tiếp nhá???","Thua cuộc", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    newGame();
+                } else {
+                    exitGame();
+                }
+            }
             loopGame();
             try {
                 Thread.sleep(17);
@@ -193,6 +249,5 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
                 e.printStackTrace();
             }
         }
-        System.out.println("Stop");
     }
 }
