@@ -55,6 +55,9 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         pauseOrPlay.addActionListener(this);
         newGame.addActionListener(this);
+        exitGame.addActionListener(this );
+
+        exitGame.setFocusable(false);
 
         this.add(pauseOrPlay);
         this.add(space1);
@@ -67,6 +70,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
+        button.setFocusable(false);
         if (button == pauseOrPlay) {
             button.setFocusable(false);
             boolean boolPlayPause = listener.pausePlay();
@@ -80,8 +84,13 @@ public class MenuPanel extends JPanel implements ActionListener {
         }
 
         if (button == newGame) {
+            button.setFocusable(false);
             listener.newGame();
-            newGame.setFocusable(false);
+        }
+
+        if (button == exitGame) {
+            button.setFocusable(false);
+            listener.exitGame();
         }
     }
 

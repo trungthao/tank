@@ -74,7 +74,6 @@ public class BulletManager {
                 audio.play(CommonVLs.EXPLOSION_TANK);
                 playerTank.setX(0);
                 playerTank.setY(0);
-                playerTank.setHidden(true);
                 arrayListBullet.remove(i);
                 return true;
             }

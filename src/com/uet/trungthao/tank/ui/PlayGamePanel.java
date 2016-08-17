@@ -224,6 +224,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         while (isPlaying) {
             if (die) {
                 for (int i = 0; i < 100; i++) {
+                    playerTank.setHidden(true);
                     loopGame();
                     if (i > 50) {
                         audio.stop();
