@@ -29,21 +29,28 @@ public class TankEnemyManager {
         for (int i = 0; i < 10; ++i) {
             int x, y;
             random = new Random();
-            boolean boolLocal;
+            boolean checkMap;
             do {
-                boolLocal = false;
-                x = random.nextInt(400) + CommonVLs.BRICK_SIZE;
-                y = random.nextInt(400) + CommonVLs.BRICK_SIZE;
+                checkMap = false;
+                x = random.nextInt(700) + CommonVLs.BRICK_SIZE;
+                y = random.nextInt(700) + CommonVLs.BRICK_SIZE;
+
+                TankEnemy tank = new TankEnemy(x,y);
+                if (tank.isObjInside(playX, playY)) {
+                    checkMap = true;
+                }
+
+                if (mapMgr.checkInsiseBrick(x,y,CommonVLs.SIZE_TANK)
+                        || mapMgr.checkInsideWater(x,y,CommonVLs.SIZE_TANK)) {
+                    checkMap = true;
+                }
                 for (TankEnemy j : arrayListTank) {
-                    if (j.isObjInside(x, y)
-                            || mapMgr.checkInsiseBrick(x,y,CommonVLs.SIZE_TANK)
-                            || (x == playX && y == playY)) {
-                        boolLocal = true;
-                        break;
+                    if (j.isObjInside(x, y)) {
+                        checkMap = true;
                     }
                 }
 
-            } while (boolLocal);
+            } while (checkMap);
             arrayListTank.add(new TankEnemy(x, y));
         }
     }
@@ -91,11 +98,11 @@ public class TankEnemyManager {
     public void checkMap(MapManager mapMgr) {
         for (int i = 0; i < arrayListTank.size(); i++) {
             TankEnemy tank = arrayListTank.get(i);
-            if (mapMgr.checkInsideTree(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
-                tank.setHidden(true);
-            } else {
-                tank.setHidden(false);
-            }
+//            if (mapMgr.checkInsideTree(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
+//                tank.setHidden(true);
+//            } else {
+//                tank.setHidden(false);
+//            }
             if (mapMgr.checkInsiseBrick(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)
                     || mapMgr.checkInsideWater(tank.getX(), tank.getY(), CommonVLs.SIZE_TANK)) {
                 tank.changeDirection();

@@ -4,19 +4,34 @@ import com.uet.trungthao.tank.commons.CommonVLs;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by JiH on 8/9/2016.
  */
 public class MapManager {
     private ArrayList<Observe> obArr;
+    private int autoMap;
 
     public MapManager() {
         initData();
     }
 
     private void initData() {
-        obArr = new ArrayList<Observe>();
+        obArr = new ArrayList<>();
+
+        autoMap = new Random().nextInt(5) + 1;
+        CommonVLs commonVLs = new CommonVLs();
+        Map<Point, Integer> map = commonVLs.getMap("map" + autoMap);
+
+        for (Map.Entry<Point, Integer> entry : map.entrySet()) {
+            Point p = entry.getKey();
+            int type = entry.getValue();
+            int x = (int) p.getX();
+            int y = (int) p.getY();
+            obArr.add(new Observe(x, y, type));
+        }
 
 //        INIT bound
         int number = CommonVLs.WIDTH_SCREEN / CommonVLs.BRICK_SIZE;
@@ -26,20 +41,6 @@ public class MapManager {
                     obArr.add(new Observe(i, j, CommonVLs.BRICK_TYPE));
                 }
             }
-//
-        obArr.add(new Observe(10, 5, CommonVLs.BRICK_TYPE));
-        obArr.add(new Observe(15, 10, CommonVLs.BRICK_TYPE));
-        obArr.add(new Observe(3, 7, CommonVLs.BRICK_TYPE));
-        obArr.add(new Observe(9, 6, CommonVLs.BRICK_TYPE));
-        obArr.add(new Observe(6, 9, CommonVLs.BRICK_TYPE));
-
-        obArr.add(new Observe(7, 7, CommonVLs.WATER_TYPE));
-        obArr.add(new Observe(8, 7, CommonVLs.WATER_TYPE));
-        obArr.add(new Observe(9, 7, CommonVLs.WATER_TYPE));
-
-        obArr.add(new Observe(5, 5, CommonVLs.TREE_TYPE));
-        obArr.add(new Observe(5, 6, CommonVLs.TREE_TYPE));
-        obArr.add(new Observe(5, 7, CommonVLs.TREE_TYPE));
     }
 
     public void drawAll(Graphics2D g2d) {
@@ -82,5 +83,9 @@ public class MapManager {
             }
         }
         return false;
+    }
+
+    public int getAutoMap() {
+        return autoMap;
     }
 }

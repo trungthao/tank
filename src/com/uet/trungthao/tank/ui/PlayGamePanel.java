@@ -39,14 +39,21 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
 
     private void initComponent() {
         die = false;
-        audio = new Audio();
-        audio.play(CommonVLs.NEW_GAME);
-        this.setVisible(true);
         press = false;
         countSpace = 0;
         countAnim = 0;
         isPlaying = true;
+
+        audio = new Audio();
+        audio.play(CommonVLs.NEW_GAME);
         mapMgr = new MapManager();
+
+        Random random = new Random();
+        boolean checkMap;
+
+        /**
+         * tạo tankPlayer
+         */
         playerTank = new PlayerTank(35, 35);
         bullMgrPlay = new BulletManager();
         bullMgrEnemy = new BulletManager();
@@ -89,7 +96,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
             enemyDie = true;
             audio.stop();
             audio.play(CommonVLs.ENDGAME);
-            int option = JOptionPane.showConfirmDialog(null,"Bạn muốn chơi tiếp ko???","Chiến thắng", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, "Bạn muốn chơi tiếp ko???", "Chiến thắng", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 newGame();
             } else {
@@ -110,11 +117,11 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
             playerTank.move();
             audio.play(CommonVLs.MOVE);
             // Kiểm tra va chạm gạch hay chưa
-            if (mapMgr.checkInsideTree(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
-                playerTank.setHidden(true);
-            } else {
-                playerTank.setHidden(false);
-            }
+//            if (mapMgr.checkInsideTree(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
+//                playerTank.setHidden(true);
+//            } else {
+//                playerTank.setHidden(false);
+//            }
             if (mapMgr.checkInsiseBrick(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)
                     || mapMgr.checkInsideWater(playerTank.getX(), playerTank.getY(), CommonVLs.SIZE_TANK)) {
                 // Xét hướng gây ra va chạm và dịch chuyển trở lại vị trí cữ => tank đứng yên
@@ -137,10 +144,10 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        mapMgr.drawAll(g2d);
-
         playerTank.draw(g2d);
         enemyMgr.drawAll(g2d);
+
+        mapMgr.drawAll(g2d);
 
         bullMgrPlay.drawAll(g2d);
         bullMgrEnemy.drawAll(g2d);
@@ -159,15 +166,9 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_K) {
-            ArrayList arr = enemyMgr.getArrayListTank();
-            for (int i = 0; i < arr.size(); i++) {
-                arr.remove(i);
-            }
-        }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             ++countSpace;
-            if (countSpace % 5 == 0) {
+            if (countSpace % 15 == 0) {
                 bullMgrPlay.add(new Bullet(playerTank.getX(), playerTank.getY(), playerTank.getDirection()));
                 audio.play(CommonVLs.SHOOT);
                 countSpace = 0;
@@ -223,10 +224,10 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
     public void run() {
         while (isPlaying) {
             if (die) {
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 50; i++) {
                     playerTank.setHidden(true);
                     loopGame();
-                    if (i > 50) {
+                    if (i > 30) {
                         audio.stop();
                     }
                     try {
@@ -236,7 +237,7 @@ public class PlayGamePanel extends JPanel implements KeyListener, MenuPanel.List
                     }
                 }
                 audio.play(CommonVLs.ENDGAME);
-                int option = JOptionPane.showConfirmDialog(null,"Thua rồi. Chơi tiếp nhá???","Thua cuộc", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showConfirmDialog(null, "Thua rồi. Chơi tiếp nhá???", "Thua cuộc", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     newGame();
                 } else {

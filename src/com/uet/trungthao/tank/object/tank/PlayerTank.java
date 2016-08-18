@@ -1,6 +1,7 @@
 package com.uet.trungthao.tank.object.tank;
 
 import com.uet.trungthao.tank.commons.CommonVLs;
+import com.uet.trungthao.tank.object.map.MapManager;
 
 import java.awt.event.KeyEvent;
 

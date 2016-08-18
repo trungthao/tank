@@ -32,6 +32,7 @@ public class BulletManager {
 
     /**
      * Kiểm tra và tạo ra hiệu ứng khi đạn bắn đạn trúng tank
+     *
      * @param arrayListTank
      * @param animMgr
      */
@@ -51,15 +52,15 @@ public class BulletManager {
 
     /**
      * Kiểm tra và tạo hiệu ứng khi đạn bắn trúng tường
+     *
      * @param mapMgr
      * @param animMgr
      */
     public void checkAll(MapManager mapMgr, AnimationManager animMgr, Audio audio) {
         for (int i = 0; i < arrayListBullet.size(); i++) {
             Bullet b = arrayListBullet.get(i);
-            if ( !mapMgr.checkInsideWater(b.getX(), b.getY(), CommonVLs.SIZE_BULLET)
-                    && mapMgr.checkInsiseBrick(b.getX(), b.getY(), CommonVLs.SIZE_BULLET)) {
-                animMgr.addAnim(CommonVLs.BULLET_EXFIORE,b.getX() - CommonVLs.ANIMATION_SIZE/2, b.getY() - CommonVLs.ANIMATION_SIZE/2);
+            if (mapMgr.checkInsiseBrick(b.getX(), b.getY(), CommonVLs.SIZE_BULLET)) {
+                animMgr.addAnim(CommonVLs.BULLET_EXFIORE, b.getX() - CommonVLs.ANIMATION_SIZE / 2, b.getY() - CommonVLs.ANIMATION_SIZE / 2);
                 audio.play(CommonVLs.EXPLOSION_BRICK);
                 arrayListBullet.remove(i);
             }
